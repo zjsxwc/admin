@@ -53,6 +53,54 @@ func (c *Controller) StartSession() session.Store {
 ```
 
 
+#### sessionId的读取顺序
+
+
+先读取cookie里的 sessionId，没有就读取query参数里的 sessionId，再没有就读取http头里的 sessionId
+
+
+```
+// getSid retrieves session identifier from HTTP Request.
+// First try to retrieve id by reading from cookie, session cookie name is configurable,
+// if not exist, then retrieve id from querying parameters.
+//
+// error is not nil when there is anything wrong.
+// sid is empty when need to generate a new session id
+// otherwise return an valid session id.
+func (manager *Manager) getSid(r *http.Request) (string, error) {
+	cookie, errs := r.Cookie(manager.config.CookieName)
+	// conf.CookieName = BConfig.WebConfig.Session.SessionName:  "beegosessionID",
+	// BConfig.WebConfig.Session.SessionNameInHTTPHeader:      "Beegosessionid",
+	if errs != nil || cookie.Value == "" {
+		var sid string
+		if manager.config.EnableSidInURLQuery {
+			errs := r.ParseForm()
+			if errs != nil {
+				return "", errs
+			}
+
+			sid = r.FormValue(manager.config.CookieName)
+		}
+
+		// if not found in Cookie / param, then read it from request headers
+		if manager.config.EnableSidInHTTPHeader && sid == "" {
+			sids, isFound := r.Header[manager.config.SessionNameInHTTPHeader]
+			if isFound && len(sids) != 0 {
+				return sids[0], nil
+			}
+		}
+
+		return sid, nil
+	}
+
+	// HTTP Request contains cookie for sessionid info.
+	return url.QueryUnescape(cookie.Value)
+}
+```
+
+
+
+
 
 
 ## beego admin
