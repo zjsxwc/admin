@@ -17,6 +17,8 @@
 
 #### 如何读写session
 
+详见文档 https://beego.me/docs/mvc/controller/session.md
+
 所有Controller的基类`beego.Controller`的方法`userinfo := this.GetSession("userinfo")`
 
 ```
