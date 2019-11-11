@@ -98,6 +98,84 @@ func (manager *Manager) getSid(r *http.Request) (string, error) {
 }
 ```
 
+#### 如何读取session
+
+前提 `BConfig.WebConfig.Session.SessionOn == True`，
+
+先在`context.Input.CruSession, err = GlobalSessions.SessionStart(rw, r)`里获取session id，如果有session id那么根据这个值获取对应的 `SessionStore`后直接用。
+
+如果之前没有session id，就生成新session id与对应的session
+```
+github.com/astaxie/beego/router.go:715
+	// GlobalSessions is the instance for the session manager
+	GlobalSessions *session.Manager
+	...
+	// session init
+	if BConfig.WebConfig.Session.SessionOn {
+		var err error
+		context.Input.CruSession, err = GlobalSessions.SessionStart(rw, r)
+
+
+github.com/astaxie/beego/session/session.go:207
+// SessionStart generate or read the session id from http request.
+// if session id exists, return SessionStore with this id.
+func (manager *Manager) SessionStart(w http.ResponseWriter, r *http.Request) (session Store, err error) {
+	sid, errs := manager.getSid(r)
+	if errs != nil {
+		return nil, errs
+	}
+
+	if sid != "" && manager.provider.SessionExist(sid) {
+		return manager.provider.SessionRead(sid)
+	}
+
+//  如果之前没有session id，就生成新session id  <----------------------------
+	// Generate a new session
+	sid, errs = manager.sessionID()
+	if errs != nil {
+		return nil, errs
+	}
+
+	session, err = manager.provider.SessionRead(sid)
+	if err != nil {
+		return nil, err
+	}
+	cookie := &http.Cookie{
+		Name:     manager.config.CookieName,
+		Value:    url.QueryEscape(sid),
+		Path:     "/",
+		HttpOnly: !manager.config.DisableHTTPOnly,
+		Secure:   manager.isSecure(r),
+		Domain:   manager.config.Domain,
+	}
+	if manager.config.CookieLifeTime > 0 {
+		cookie.MaxAge = manager.config.CookieLifeTime
+		cookie.Expires = time.Now().Add(time.Duration(manager.config.CookieLifeTime) * time.Second)
+	}
+	if manager.config.EnableSetCookie {
+		http.SetCookie(w, cookie)
+	}
+	r.AddCookie(cookie)
+
+	if manager.config.EnableSidInHTTPHeader {
+		r.Header.Set(manager.config.SessionNameInHTTPHeader, sid)
+		w.Header().Set(manager.config.SessionNameInHTTPHeader, sid)
+	}
+
+	return
+}
+
+
+//github.com/astaxie/beego/session/session.go:342
+func (manager *Manager) sessionID() (string, error) {
+	b := make([]byte, manager.config.SessionIDLength)
+	n, err := rand.Read(b)
+	if n != len(b) || err != nil {
+		return "", fmt.Errorf("Could not successfully read from the system CSPRNG")
+	}
+	return manager.config.SessionIDPrefix + hex.EncodeToString(b), nil
+}
+```
 
 
 
