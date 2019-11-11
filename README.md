@@ -1,3 +1,60 @@
+## 代码阅读
+
+#### 如何对数据库表初始化
+
+使用`"-syncdb"`参数进入`models.Syncdb()` beego/admin/admin.go:37
+
+`createdb()`连接数据库后创建对应名字的数据库
+
+然后`Connect()`连接这个新创建的对应名字的数据库
+
+然后创建所有model的数据库表。
+
+###### 如何创建所有model的数据库表
+
+由于golang运行之前会执行所有依赖的文件的`init()`方法，我们的所有model文件里都有一个`init()`方法，来把model注册到包`orm`里的全局变量`modelCache`里（类型是 sync.RWMutex 读写互斥锁）
+
+
+#### 如何读写session
+
+所有Controller的基类`beego.Controller`的方法`userinfo := this.GetSession("userinfo")`
+
+```
+
+// SetSession puts value into session.
+func (c *Controller) SetSession(name interface{}, value interface{}) {
+	if c.CruSession == nil {
+		c.StartSession()
+	}
+	c.CruSession.Set(name, value)
+}
+// GetSession gets value from session.
+func (c *Controller) GetSession(name interface{}) interface{} {
+	if c.CruSession == nil {
+		c.StartSession()
+	}
+	return c.CruSession.Get(name)
+}
+
+// DelSession removes value from session.
+func (c *Controller) DelSession(name interface{}) {
+	if c.CruSession == nil {
+		c.StartSession()
+	}
+	c.CruSession.Delete(name)
+}
+// StartSession starts session and load old session data info this controller.
+func (c *Controller) StartSession() session.Store {
+	if c.CruSession == nil {
+		c.CruSession = c.Ctx.Input.CruSession
+	}
+	return c.CruSession
+}
+```
+
+
+
+
 ## beego admin
 
 基于beego，jquery easyui ,bootstrap的一个后台管理系统
