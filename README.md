@@ -201,7 +201,61 @@ func (manager *Manager) sessionID() (string, error) {
 ```
 
 
+#### 如何判断权限
 
+```
+alist := make([]*AccessNode, 0)
+type AccessNode struct {
+	Id        int64
+	Name      string
+	Childrens []*AccessNode
+}
+```
+
+````
+	accesslist := make(map[string]bool)
+	for _, v := range alist {
+		for _, v1 := range v.Childrens {
+			for _, v2 := range v1.Childrens {
+				vname := strings.Split(v.Name, "/")
+				v1name := strings.Split(v1.Name, "/")
+				v2name := strings.Split(v2.Name, "/")
+				str := fmt.Sprintf("%s/%s/%s", strings.ToLower(vname[0]), strings.ToLower(v1name[0]), strings.ToLower(v2name[0]))
+				accesslist[str] = true
+			}
+		}
+	}
+```
+
+accesslist值例子，就是通过一级到三级Node的Name字段拼key "%s/%s/%s"
+````
+map[rbac/group/index:true rbac/user/adduser:true rbac/user/index:true]
+````
+
+是否有权限就是先通过url获取key
+
+```
+params := strings.Split(strings.ToLower(strings.Split(ctx.Request.RequestURI, "?")[0]), "/")
+// 请求 http://127.0.0.1:8080/rbac/user/index?xx=yy 就得到 params为 list[ rbac user index ]
+//To test whether permissions
+func AccessDecision(params []string, accesslist map[string]bool) bool {
+	if CheckAccess(params) {
+		s := fmt.Sprintf("%s/%s/%s", params[1], params[2], params[3])
+		if len(accesslist) < 1 {
+			return false
+		}
+		_, ok := accesslist[s]
+		if ok != false {
+			return true
+		}
+	} else {
+		return true
+	}
+	return false
+}
+
+beego.InsertFilter("/*", beego.BeforeRouter, Check)//Check就是每次访问拦截鉴权
+```
 
 
 ## beego admin
