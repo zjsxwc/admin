@@ -65,7 +65,7 @@ $(function(){
 <table id="datagrid2" toolbar="#tb2"></table>
 <div id="tb2" style="padding:5px;height:auto">
     <div style="margin-bottom:5px">
-        当前组：<input id="combobox" name="name" >
+        当前Role：<input id="combobox" name="name" >
         <a href="#"  class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="saveselect()">保存</a>
     </div>
     <div style="margin-bottom:5px">
