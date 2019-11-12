@@ -3,10 +3,22 @@
 #### 关于为什么很少用ORM外键已经相关的一系列级联删除、更新
 
 1.因为数据的价值变大基本上都是通过标记字段来软删除，而不会直接删除或者级联覆盖
+
 2.业务都在高级语言里面，而不在数据库里面
+
 3.性能
+
 4.方便后来者接手
 
+Beego Orm是带软外键支持的
+
+i find that beego orm not create real foreign key in the Database(Mysql, sqlite), 
+
+but when we do delete the Model in beego orm golang code, it will do delete the other related Model(s).
+
+so there is the soft foreign key constraints in its golang code.
+
+see the references of method `deleteRels()` https://github.com/astaxie/beego/blob/v1.12.0/orm/db.go#L805
 
 #### 如何对数据库表初始化
 
