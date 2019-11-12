@@ -169,7 +169,7 @@
 <body>
 <table id="treegrid" title="节点管理" class="easyui-treegrid" toolbar="#tb"></table>
 <div id="tb" style="padding:5px;height:auto">
-    <input id="group"/>
+    Node Group<input id="group"/>
     <a href="#" icon='icon-add' plain="true" onclick="addrow()" class="easyui-linkbutton" >新增</a>
     <a href="#" icon='icon-edit' plain="true" onclick="editrow()" class="easyui-linkbutton" >编辑</a>
     <a href="#" icon='icon-save' plain="true" onclick="saverow()" class="easyui-linkbutton" >保存</a>
