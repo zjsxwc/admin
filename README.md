@@ -10,7 +10,8 @@
 
 4.方便后来者接手
 
-Beego Orm是带软外键支持的
+说明：
+Beego Orm不创建真正的数据库外键，但是带了软外键支持的，所以外键on_delete(`cascade,set_null,set_default,do_nothing`)对于orm model的删除仍旧有效，但直接raw sql删除就不会级联处理，因为没有真正数据库外键创建。
 
 i find that beego orm not create real foreign key in the Database(Mysql, sqlite), 
 
