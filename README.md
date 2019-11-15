@@ -200,6 +200,17 @@ func (manager *Manager) sessionID() (string, error) {
 }
 ```
 
+如果不是内存存储session的话还要在main.go的init里配置gob
+```
+
+func init()  {
+	//基础类型 int、string等默认已经注册了的，不需要为session注册，需要注册特定类型，在文件`sess_utils.go`里init注册了的也不用再注册
+	gob.Register(models.User{})
+	gob.Register(map[string]bool{})
+	gob.Register(map[string]string{})
+}
+```
+
 
 #### 如何判断权限
 
@@ -212,7 +223,7 @@ type AccessNode struct {
 }
 ```
 
-````
+```
 	accesslist := make(map[string]bool)
 	for _, v := range alist {
 		for _, v1 := range v.Childrens {
@@ -228,15 +239,15 @@ type AccessNode struct {
 ```
 
 accesslist值例子，就是通过一级到三级Node的Name字段拼key "%s/%s/%s"
-````
+```
 map[rbac/group/index:true rbac/user/adduser:true rbac/user/index:true]
-````
+```
 
 是否有权限就是先通过url获取key
 
 ```
 params := strings.Split(strings.ToLower(strings.Split(ctx.Request.RequestURI, "?")[0]), "/")
-// 请求 http://127.0.0.1:8080/rbac/user/index?xx=yy 就得到 params为 list[ rbac user index ]
+// 请求 http://127.0.0.1:8080/rbac/user/index?xx=yy 就得到 params为 list["" "rbac" "user" "index"] 长度为4
 //To test whether permissions
 func AccessDecision(params []string, accesslist map[string]bool) bool {
 	if CheckAccess(params) {
@@ -257,6 +268,18 @@ func AccessDecision(params []string, accesslist map[string]bool) bool {
 beego.InsertFilter("/*", beego.BeforeRouter, Check)//Check就是每次访问拦截鉴权
 ```
 
+如果用户没有登录就跳去登录页面
+```
+rbac_auth_gateway := beego.AppConfig.String("rbac_auth_gateway")//app.conf 里 rbac_auth_gateway = /public/login
+			if CheckAccess(params) {
+				uinfo := ctx.Input.Session("userinfo")
+				if uinfo == nil {
+					ctx.Redirect(302, rbac_auth_gateway)
+                    return
+				}
+```
+
+如果当前登录用户访问的url不在其accesslist里面，那么返回json `{"status": false, "info": "权限不足"}`
 
 ## beego admin
 
