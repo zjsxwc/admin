@@ -302,6 +302,7 @@ $ git clone git@github.com:zjsxwc/beego-admin.git $GOPATH/src/github.com/beego/a
 ### 创建应用
 首先,使用bee工具创建一个应用程序，参考[`http://beego.me/quickstart`](beego的入门)
 ```
+$ cd $GOPATH/src
 $ bee new hello
 ```
 创建成功以后，你能得到一个名叫hello的应用程序，
