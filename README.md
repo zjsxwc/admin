@@ -291,7 +291,8 @@ VERSION = "0.1.1"
 
 执行以下命令，就能够在你的`GOPATH/src` 目录下发现beego admin
 ```bash
-$ go get github.com/beego/admin
+$ # go get github.com/beego/admin 因为现在beego是v2.x了所以得用下面这种方式安装v1.x版beego
+$ git clone --depth 1 --branch v1.12.3 git@github.com:beego/beego.git $GOPATH/src/github.com/astaxie/beego
 ```
 
 ## 初次使用
