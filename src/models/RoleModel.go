@@ -143,12 +143,13 @@ func AddRoleNode(roleid int64, nodeid int64) (int64, error) {
 func DelUserRole(roleid int64) error {
 	o := orm.NewOrm()
 	errTx := o.Begin()
-	if errTx == nil {
+	if errTx != nil {
 		return errTx
 	}
 	_, err := o.QueryTable("user_roles").Filter("role_id", roleid).Delete()
 	if err != nil {
 		errTx = o.Rollback()
+		return err
 	} else {
 		errTx = o.Commit()
 	}
