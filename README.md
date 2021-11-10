@@ -329,6 +329,8 @@ func init() {
 	admin.Run()
 	beego.Router("/", &controllers.MainController{})
 }
+
+$ go mod tidy
 ```
 ### 配置文件
 
