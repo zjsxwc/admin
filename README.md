@@ -418,3 +418,31 @@ $ ./hello
 
 默认得用户名密码都是admin
 
+
+### 这个项目的缺点
+
+- 使用了easyui这个商业版权的前端库，不能用于收费用途
+
+```code
+正则搜索 \$\(\"#.*\"\)\.有这些地方使用了easyui
+
+$("#datagrid").datagrid(
+$("#datagrid2").datagrid("reload",{Id:record.Id});
+$(this).datagrid("selectRow",index);
+if(!$("#datagrid").datagrid("getSelected")){
+$("#datagrid").datagrid("cancelEdit",vac.getindex("datagrid"));
+$("#datagrid").datagrid("appendRow",{Status:2});//插入
+$("#datagrid").datagrid("beginEdit",lenght);//编辑输入
+
+
+$("#tree").tree({
+$("#combobox").combobox(
+$("#tabs").tabs({
+$("#mm").menu(
+$("#treegrid").treegrid(
+$("#dialog").dialog({
+$("#form1").form(
+
+```
+- rbac里每个操作都没有使用事务，于是操作失败也不能rollback恢复，所以存在丢失数据情况
+
