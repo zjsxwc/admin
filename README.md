@@ -309,6 +309,9 @@ $ ln -s $GOPATH/src/github.com/beego/bee/bin/bee ~/.local/bin/
 ```
 $ cd $GOPATH/src
 $ bee new hello
+$ cd hello
+$ echo "require github.com/beego/admin v0.0.0" >> go.mod
+$ echo "replace github.com/beego/admin => ../github.com/beego/admin" >> go.mod
 ```
 创建成功以后，你能得到一个名叫hello的应用程序，
 现在开始可以使用它了。找到到刚刚新建的程序`hello/routers/router.go`这个文件
