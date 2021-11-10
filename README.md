@@ -426,6 +426,7 @@ $ ./hello
 ```code
 正则搜索 \$\(\"#.*\"\)\.有这些地方使用了easyui
 
+try https://free-jqgrid.github.io/getting-started/index.html instead
 $("#datagrid").datagrid(
 $("#datagrid2").datagrid("reload",{Id:record.Id});
 $(this).datagrid("selectRow",index);
@@ -434,9 +435,12 @@ $("#datagrid").datagrid("cancelEdit",vac.getindex("datagrid"));
 $("#datagrid").datagrid("appendRow",{Status:2});//插入
 $("#datagrid").datagrid("beginEdit",lenght);//编辑输入
 
-
+try https://github.com/jzaefferer/jquery-treeview instead
 $("#tree").tree({
+
+try https://github.com/sutara79/jquery.ajax-combobox instead
 $("#combobox").combobox(
+
 $("#tabs").tabs({
 $("#mm").menu(
 $("#treegrid").treegrid(
