@@ -330,6 +330,7 @@ func init() {
 	beego.Router("/", &controllers.MainController{})
 }
 
+$ #Goland "Preference|Go|Go Modules|Enable Modlue Integration": GOPROXY=https://goproxy.cn
 $ go mod tidy
 ```
 ### 配置文件
