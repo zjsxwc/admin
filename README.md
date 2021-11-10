@@ -338,12 +338,17 @@ func init() {
 
 数据库的配置信息需要填写，程序会根据配置自动建库
 MySQL数据库链接信息
+```sql
+#使用utf8mb4字符集，使用utf8mb4_unicode_ci字符序排序
+create datbase beegoadmin collate utf8mb4_unicode_ci
+```
+
 ```
 db_host = localhost
 db_port = 3306
 db_user = root
 db_pass = root
-db_name = admin
+db_name = beegoadmin
 db_type = mysql
 ```
 postgresql数据库链接信息
@@ -352,7 +357,7 @@ db_host = localhost
 db_port = 5432
 db_user = postgres
 db_pass = postgres
-db_name = admin
+db_name = beegoadmin
 db_type = postgres
 db_sslmode=disable
 ```
@@ -360,7 +365,7 @@ sqlite3数据库链接信息
 ```
 ###db_path 是指数据库保存的路径，默认是在项目的根目录
 db_path = ./
-db_name = admin
+db_name = beegoadmin
 db_type = sqlite3
 ```
 把以上信息配置成你自己数据库的信息。
