@@ -410,7 +410,11 @@ $ go build
 ```bash
 $ ./hello -syncdb
 ```
-好了，现在可以通过浏览器地址访问了[`http://localhost:8080/`](http://localhost:8080/)
+运行服务器
+``bash
+$ ./hello
+``
+好了， 现在可以通过浏览器地址访问了[`http://localhost:8080/`](http://localhost:8080/)
 
 默认得用户名密码都是admin
 
