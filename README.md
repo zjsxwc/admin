@@ -293,7 +293,9 @@ VERSION = "0.1.1"
 ```bash
 $ # go get github.com/beego/admin 因为现在beego是v2.x了所以得用下面这种方式安装v1.x版beego
 $ git clone --depth 1 --branch v1.12.3 git@github.com:beego/beego.git $GOPATH/src/github.com/astaxie/beego
+$ git clone git@github.com:zjsxwc/beego-admin.git $GOPATH/src/github.com/beego/admin
 ```
+
 
 ## 初次使用
 
