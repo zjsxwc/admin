@@ -297,8 +297,8 @@ $ git clone git@github.com:zjsxwc/beego-admin.git $GOPATH/src/github.com/beego/a
 $ ## 下面创建1.x版的 bee工具
 $ git clone --depth 1 --branch v1.12.3 git@github.com:beego/bee.git $GOPATH/src/github.com/beego/bee
 $ cd $GOPATH/src/github.com/beego/bee
-$ go build -o bin/bee
-$ ln -s $GOPATH/src/github.com/beego/bee/bin/bee ~/.local/bin/
+$ go build -o bin/bee1.x
+$ ln -s $GOPATH/src/github.com/beego/bee/bin/bee1.x ~/.local/bin/
 ```
 
 
@@ -308,7 +308,7 @@ $ ln -s $GOPATH/src/github.com/beego/bee/bin/bee ~/.local/bin/
 首先,使用bee工具创建一个应用程序，参考[`http://beego.me/quickstart`](beego的入门)
 ```
 $ cd $GOPATH/src
-$ bee new hello
+$ bee1.x new hello
 $ cd hello
 $ echo "require github.com/beego/admin v0.0.0" >> go.mod
 $ echo "replace github.com/beego/admin => ../github.com/beego/admin" >> go.mod
