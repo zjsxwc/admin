@@ -50,8 +50,8 @@ func (this *MainController) Index() {
 
 //登录
 func (this *MainController) Login() {
-	isajax := this.GetString("isajax")
-	if isajax == "1" {
+	isajax := this.Ctx.Input.IsAjax()
+	if isajax {
 		username := this.GetString("username")
 		password := this.GetString("password")
 		user, err := CheckLogin(username, password)
@@ -65,7 +65,6 @@ func (this *MainController) Login() {
 			this.Rsp(false, err.Error())
 			return
 		}
-
 	}
 	userinfo := this.GetSession("userinfo")
 	if userinfo != nil {

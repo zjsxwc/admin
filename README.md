@@ -447,6 +447,8 @@ $("#combobox").combobox(
 $("#tabs").tabs({
 $("#mm").menu(
 $("#treegrid").treegrid(
+
+try https://github.com/craftpip/jquery-confirm 
 $("#dialog").dialog({
 $("#form1").form(
 
